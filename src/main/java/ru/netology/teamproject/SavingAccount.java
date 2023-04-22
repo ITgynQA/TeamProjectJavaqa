@@ -66,19 +66,28 @@ public class SavingAccount extends Account {
      * @param amount - сумма покупки
      * @return true если операция прошла успешно, false иначе.
      */
-    @Override
-    public boolean pay(int amount) {
+
+    public boolean approvalPay(int amount) {
         if (amount <= 0) {
             return false;
         }
-        balance = balance - amount;
-        if (balance > minBalance) {
-            return true;
-        } else {
-            return false;
-        }
+      if (balance - amount < minBalance){
+          return false;
+        }else {
+          return true;
+      }
     }
 
+
+   public int pay(int amount) {
+        if (amount <= 0) {
+            return balance;
+        }    if (balance - amount >= minBalance) {
+            return balance;
+        } else {
+            return(balance - amount);
+    }
+    }
     /**
      * Операция пополнения карты на указанную сумму.
      * В результате успешного вызова этого метода, баланс должен увеличиться
@@ -91,7 +100,7 @@ public class SavingAccount extends Account {
      * @return true если операция прошла успешно, false иначе.
      * @return
      */
-    @Override
+
 
     public boolean add(int amount) {
         if (amount <= 0) {
