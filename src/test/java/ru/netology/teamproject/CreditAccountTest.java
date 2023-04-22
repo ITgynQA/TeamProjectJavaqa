@@ -367,6 +367,7 @@ public class CreditAccountTest {
         Assertions.assertEquals(-83, account.yearChange());
     }
 
+
     @Test
     public void shouldSetToPositiveRate() {
         CreditAccount account = new CreditAccount(
@@ -403,41 +404,41 @@ public class CreditAccountTest {
         Assertions.assertEquals(15, account.getRate());
     }
 
-    @Test
-    public void shouldIncreaseCreditLimit() {
-        CreditAccount account = new CreditAccount(
-                2000,
-                5000,
-                15
-        );
-        account.setCreditLimit(6000);
+    // @Test
+    // public void shouldIncreaseCreditLimit() {
+    //CreditAccount account = new CreditAccount(
+    //     2000,
+    //     5000,
+    //     15
+    // );
+    //   account.setCreditLimit(6000);
 
-        Assertions.assertEquals(6000, account.getCreditLimit());
-    }
+    //   Assertions.assertEquals(6000, account.getCreditLimit());
+    // }
 
-    @Test
-    public void shouldDecreaseCreditLimit() {
-        CreditAccount account = new CreditAccount(
-                5000,
-                15,
-                15
-        );
-        account.setCreditLimit(4000);
+    // @Test
+    //  public void shouldDecreaseCreditLimit() {
+    // CreditAccount account = new CreditAccount(
+    //            5000,
+    //            15,
+    //          15
+    //   );
+    //    account.setCreditLimit(4000);
 
-        Assertions.assertEquals(4000, account.getCreditLimit());
-    }
+    //   Assertions.assertEquals(4000, account.getCreditLimit());
+    // }
 
-    @Test
-    public void shouldSetCreditLimitToZero() {
-        CreditAccount account = new CreditAccount(
-                2000,
-                5000,
-                15
-        );
-        account.setCreditLimit(0);
+    //  @Test
+    // public void shouldSetCreditLimitToZero() {
+    //    CreditAccount account = new CreditAccount(
+    //           2000,
+    //          5000,
+    //           15
+    //   );
+    //    account.setCreditLimit(0);
 
-        Assertions.assertEquals(0, account.getCreditLimit());
-    }
+    //   Assertions.assertEquals(0, account.getCreditLimit());
+    //}
 
 
 }

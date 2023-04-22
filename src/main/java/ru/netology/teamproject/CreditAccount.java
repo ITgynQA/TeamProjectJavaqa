@@ -19,11 +19,11 @@ public class CreditAccount extends Account {
      * @param creditLimit    - неотрицательное число, максимальная сумма которую можно задолжать банку
      * @param rate           - неотрицательное число, ставка кредитования для расчёта долга за отрицательный баланс
      */
-    public CreditAccount(int initialBalance, int creditLimit, int rate)  {
+    public CreditAccount(int initialBalance, int creditLimit, int rate) {
         if (rate <= 0) {
             throw new IllegalArgumentException(
                     "Накопительная ставка не может быть отрицательной, а у вас: " + rate
-           );
+            );
         }
         this.balance = initialBalance;
         this.creditLimit = creditLimit;
@@ -35,7 +35,7 @@ public class CreditAccount extends Account {
      * В результате успешного вызова этого метода, баланс должен уменьшиться
      * на сумму покупки. Если же операция может привести к некорректному
      * состоянию счёта (например, баланс может уйти в минус), то операция должна
-     * завершиться вернув false и ничего не поменяв на счёте.
+     * завершиться вернув false и ничего не поменяв на счёте.г
      *
      * @param amount - сумма покупки
      * @return true если операция прошла успешно, false иначе.
@@ -86,10 +86,13 @@ public class CreditAccount extends Account {
      */
     @Override
     public int yearChange() {
-        return balance / 100 * rate;
+
+        return balance * rate /100;
     }
+
 
     public int getCreditLimit() {
         return creditLimit;
     }
+
 }
