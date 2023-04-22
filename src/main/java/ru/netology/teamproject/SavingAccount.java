@@ -44,17 +44,17 @@ public class SavingAccount extends Account {
                             ", а минимальный баланс : " + minBalance
             );
         }
-            if (maxBalance == minBalance) {
-                throw new IllegalArgumentException(
-                        "Максимальный  баланс не может быть равен минимальному балансу, а у вас максимальный баланс : " + maxBalance +
-                                ", а минимальный баланс : " + minBalance
-                );
-            }
-            this.balance = initialBalance;
-            this.minBalance = minBalance;
-            this.maxBalance = maxBalance;
-            this.rate = rate;
+        if (maxBalance == minBalance) {
+            throw new IllegalArgumentException(
+                    "Максимальный  баланс не может быть равен минимальному балансу, а у вас максимальный баланс : " + maxBalance +
+                            ", а минимальный баланс : " + minBalance
+            );
         }
+        this.balance = initialBalance;
+        this.minBalance = minBalance;
+        this.maxBalance = maxBalance;
+        this.rate = rate;
+    }
 
     /**
      * Операция оплаты с карты на указанную сумму.
@@ -66,28 +66,30 @@ public class SavingAccount extends Account {
      * @param amount - сумма покупки
      * @return true если операция прошла успешно, false иначе.
      */
-
-    public boolean approvalPay(int amount) {
-        if (amount <= 0) {
+    @Override
+    public boolean pay(int amount) {
+        if (amount < 0) {
             return false;
         }
-      if (balance - amount < minBalance){
-          return false;
-        }else {
-          return true;
-      }
+        if (balance - amount < minBalance) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
 
-   public int pay(int amount) {
-        if (amount <= 0) {
+    public int approvalPay(int amount) {
+        if (amount < 0) {
             return balance;
-        }    if (balance - amount >= minBalance) {
+        }
+        if (balance - amount < minBalance) {
             return balance;
         } else {
-            return(balance - amount);
+            return (balance - amount);
+        }
     }
-    }
+
     /**
      * Операция пополнения карты на указанную сумму.
      * В результате успешного вызова этого метода, баланс должен увеличиться
@@ -101,40 +103,49 @@ public class SavingAccount extends Account {
      * @return
      */
 
-
-    public boolean add(int amount) {
-        if (amount <= 0) {
-            return false;
-        }
-        if (balance + amount < maxBalance) {
-            balance = amount;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Операция расчёта процентов на остаток счёта при условии, что
-     * счёт не будет меняться год. Сумма процентов приводится к целому
-     * числу через отбрасывание дробной части (так и работает целочисленное деление).
-     * Пример: если на счёте 200 рублей, то при ставке 15% ответ должен быть 30.
-     *
-     * @return
-     */
     @Override
-    public int yearChange() {
-        return balance / 100 * rate;
+    public boolean add(int amount) {
+        if (amount < 0) {
+            return false;
+        }
+        if (balance + amount > maxBalance) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
-    public int getMinBalance() {
-        return minBalance;
-    }
+    public int approvalAdd(int amount) {
+        if (amount < 0) {
+            return balance;
+        }
+        if (balance + amount > maxBalance) {
+            return balance;
+        } else {
+            return (balance + amount);
+        }
+        /**
+         * Операция расчёта процентов на остаток счёта при условии, что
+         * счёт не будет меняться год. Сумма процентов приводится к целому
+         * числу через отбрасывание дробной части (так и работает целочисленное деление).
+         * Пример: если на счёте 200 рублей, то при ставке 15% ответ должен быть 30.
+         *
+         * @return
+         */
+        //@Override
+        // public int yearChange() {
+        //  return balance / 100 * rate;
+        // }
 
-    public int getMaxBalance() {
-        return maxBalance;
+        // public int getMinBalance() {
+        //     return minBalance;
+        // }
+
+        //  public int getMaxBalance() {
+        //     return maxBalance;
     }
-    public SavingAccount getSavingAccount(SavingAccount account) {
-        return account;
-    }
+    //   public SavingAccount getSavingAccount(SavingAccount account) {
+    //      return account;
+    //  }
 }
+
