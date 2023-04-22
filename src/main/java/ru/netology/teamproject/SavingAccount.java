@@ -125,4 +125,7 @@ public class SavingAccount extends Account {
     public int getMaxBalance() {
         return maxBalance;
     }
+    public SavingAccount getSavingAccount(SavingAccount account) {
+        return account;
+    }
 }
