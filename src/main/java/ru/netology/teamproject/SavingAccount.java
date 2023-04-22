@@ -86,7 +86,8 @@ public class SavingAccount extends Account {
         if (balance - amount < minBalance) {
             return balance;
         } else {
-            return (balance - amount);
+            balance = balance - amount;
+            return balance;
         }
     }
 
@@ -122,7 +123,8 @@ public class SavingAccount extends Account {
         if (balance + amount > maxBalance) {
             return balance;
         } else {
-            return (balance + amount);
+            balance = balance + amount;
+            return balance;
         }
         /**
          * Операция расчёта процентов на остаток счёта при условии, что

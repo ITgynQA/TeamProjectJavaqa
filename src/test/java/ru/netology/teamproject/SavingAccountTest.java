@@ -198,8 +198,8 @@ public class SavingAccountTest {
                 10_000,
                 5
         );
-
-        Assertions.assertEquals(2_000 - 1_000, account.pay(1000));
+        account.approvalPay(1000);
+        Assertions.assertEquals(2_000 - 1_000, account.getBalance());
     }
 
     @Test
@@ -221,7 +221,9 @@ public class SavingAccountTest {
                 10_000,
                 5
         );
-        Assertions.assertEquals(2_000 + 3_000, account.approvalAdd(3000));
+        account.approvalAdd(3000);
+
+        Assertions.assertEquals(2_000 + 3_000, account.getBalance());
     }
 
     @Test
@@ -319,7 +321,7 @@ public class SavingAccountTest {
                 5
         );
 
-        account.add(8_000);
+        account.approvalAdd(8_000);
 
         Assertions.assertEquals(2_000 + 8_000, account.getBalance());
     }
