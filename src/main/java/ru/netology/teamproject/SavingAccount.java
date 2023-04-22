@@ -43,13 +43,18 @@ public class SavingAccount extends Account {
                     "Максимальный  баланс не может быть меньше минимального баланса, а у вас максимальный баланс : " + maxBalance +
                             ", а минимальный баланс : " + minBalance
             );
-
         }
-        this.balance = initialBalance;
-        this.minBalance = minBalance;
-        this.maxBalance = maxBalance;
-        this.rate = rate;
-    }
+            if (maxBalance == minBalance) {
+                throw new IllegalArgumentException(
+                        "Максимальный  баланс не может быть равен минимальному балансу, а у вас максимальный баланс : " + maxBalance +
+                                ", а минимальный баланс : " + minBalance
+                );
+            }
+            this.balance = initialBalance;
+            this.minBalance = minBalance;
+            this.maxBalance = maxBalance;
+            this.rate = rate;
+        }
 
     /**
      * Операция оплаты с карты на указанную сумму.
@@ -87,6 +92,7 @@ public class SavingAccount extends Account {
      * @return
      */
     @Override
+
     public boolean add(int amount) {
         if (amount <= 0) {
             return false;
