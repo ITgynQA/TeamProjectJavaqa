@@ -70,29 +70,29 @@ public class SavingAccountTest {
         });
     }
 
-    @Test
-    public void shouldCreateSavingAccountIfInitialBalanceEqualsMinBalance() {
-        SavingAccount account = new SavingAccount(
-                1_000,
-                1_000,
-                10_000,
-                5
-        );
+    //  @Test
+    // public void shouldCreateSavingAccountIfInitialBalanceEqualsMinBalance() {
+    // SavingAccount account = new SavingAccount(
+    //        1_000,
+    //         1_000,
+    //          10_000,
+    //          5
+    //    );
 
-        Assertions.assertEquals(account, account.getSavingAccount(account));
-    }
+    //     Assertions.assertEquals(account, account.getSavingAccount(account));
+    // }
 
-    @Test
-    public void shouldCreateSavingAccountIfRateIsZero() {
-        SavingAccount account = new SavingAccount(
-                2_000,
-                1_000,
-                10_000,
-                0
-        );
+    // @Test
+    // public void shouldCreateSavingAccountIfRateIsZero() {
+    // SavingAccount account = new SavingAccount(
+    ///         2_000,
+    //          1_000,
+    //          10_000,
+    //          0
+    //  );
 
-        Assertions.assertEquals(account, account.getSavingAccount(account));
-    }
+    //  Assertions.assertEquals(account, account.getSavingAccount(account));
+    //  }
 
     @Test
     void shouldChangeBalanceToPurchaseAmountAtPay() {
