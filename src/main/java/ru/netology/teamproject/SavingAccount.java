@@ -20,16 +20,15 @@ public class SavingAccount extends Account {
      * @param rate - неотрицательное число, ставка в процентах годовых на остаток
      */
     public SavingAccount(int initialBalance, int minBalance, int maxBalance, int rate) {
-        super(initialBalance, rate);
         if (rate < 0) {
             throw new IllegalArgumentException(
                     "Накопительная ставка не может быть отрицательной, а у вас: " + rate
             );
         }
-        //this.balance = initialBalance;
+        this.balance = initialBalance;
         this.minBalance = minBalance;
         this.maxBalance = maxBalance;
-        //this.rate = rate;
+        this.rate = rate;
     }
 
     /**
@@ -86,7 +85,7 @@ public class SavingAccount extends Account {
      * @return
      */
     @Override
-    public int yearChange(int month) {
+    public int yearChange() {
         return balance / 100 * rate;
     }
 

@@ -1,9 +1,9 @@
 
 package ru.netology.teamproject;
 
+
 import java.util.ArrayList;
 import java.util.List;
-
 /**
  * Кредитный счёт
  * Может иметь баланс вплоть до отрицательного, но до указанного кредитного лимита.
@@ -14,18 +14,46 @@ public class CreditAccount extends Account {
 
     protected int creditLimit;
     protected int daysYear = 365;
+    protected int termMonth;
     List<Integer> dayBalance = new ArrayList<>();
 
     /**
      * Создаёт новый объект кредитного счёта с заданными параметрами.
      * Если параметры некорректны (кредитный лимит отрицательный и так далее), то
      * должно выкидываться исключения вида IllegalArgumentException.
+     *
      * @param initialBalance - неотрицательное число, начальный баланс для счёта
-     * @param creditLimit - неотрицательное число, максимальная сумма которую можно задолжать банку
-     * @param rate - неотрицательное число, ставка кредитования для расчёта долга за отрицательный баланс
+     * @param creditLimit    - неотрицательное число, максимальная сумма которую можно задолжать банку
+     * @param rate           - неотрицательное число, ставка кредитования для расчёта долга за отрицательный баланс
      */
     public CreditAccount(int initialBalance, int creditLimit, int rate) {
-        super(initialBalance, rate);
+        if (rate < 0) {
+            throw new IllegalArgumentException(
+                    "Накопительная ставка не может быть отрицательной, а у вас: " + rate
+           );
+        }
+        if (initialBalance < 0) {
+            throw new IllegalArgumentException(
+                    "Начальный баланс не может быть отрицательным, а у вас: " + initialBalance
+            );
+        }
+        if (creditLimit < 0) {
+            throw new IllegalArgumentException(
+                    "Кредитный лимит не может быть отрицательным, а у вас: " + creditLimit
+            );
+        }
+        if (initialBalance != creditLimit) {
+            throw new IllegalArgumentException(
+                    "Начальный баланс должен быть равен кредитному лимиту, а у вас: баланс " + initialBalance +
+                    " ,а лимит " + creditLimit
+            );
+        }
+        this.balance = initialBalance;
+        this.creditLimit = creditLimit;
+        this.rate = rate;
+    }
+
+    public CreditAccount(int initialBalance, int creditLimit, int rate, int termMonth) {
         if (rate < 0) {
             throw new IllegalArgumentException(
                     "Накопительная ставка не может быть отрицательной, а у вас: " + rate
@@ -44,10 +72,13 @@ public class CreditAccount extends Account {
         if (initialBalance != creditLimit) {
             throw new IllegalArgumentException(
                     "Начальный баланс должен быть равен кредитному лимиту, а у вас: баланс " + initialBalance +
-                    " ,а лимит " + creditLimit
+                            " ,а лимит " + creditLimit
             );
         }
+        this.balance = initialBalance;
         this.creditLimit = creditLimit;
+        this.rate = rate;
+        this.termMonth = termMonth;
     }
 
     /**
@@ -56,6 +87,7 @@ public class CreditAccount extends Account {
      * на сумму покупки. Если же операция может привести к некорректному
      * состоянию счёта (например, баланс может уйти в минус), то операция должна
      * завершиться вернув false и ничего не поменяв на счёте.
+     *
      * @param amount - сумма покупки
      * @return true если операция прошла успешно, false иначе.
      */
@@ -78,9 +110,10 @@ public class CreditAccount extends Account {
      * на сумму покупки. Если же операция может привести к некорректному
      * состоянию счёта, то операция должна
      * завершиться вернув false и ничего не поменяв на счёте.
+     *
      * @param amount - сумма пополнения
-     * @return true если операция прошла успешно, false иначе.
      * @param amount
+     * @return true если операция прошла успешно, false иначе.
      * @return
      */
     @Override
@@ -98,15 +131,16 @@ public class CreditAccount extends Account {
      * числу через отбрасывание дробной части (так и работает целочисленное деление).
      * Пример: если на счёте -200 рублей, то при ставке 15% ответ должен быть -30.
      * Пример 2: если на счёте 200 рублей, то при любой ставке ответ должен быть 0.
+     *
      * @return
      */
     @Override
-    public int yearChange(int month) {
+    public int yearChange() {
         int change = 0;
         if (balance >= 0) {
             return change;
         }
-        if (month == 12) {
+        if (termMonth == 12) {
             change = balance * rate / 100;
         }
         return change;
@@ -133,7 +167,6 @@ public class CreditAccount extends Account {
         dayBalance.add(balance);
     }
 
-    @Override
     public boolean addYearPercent() {
         if(dayBalance.size() == daysYear) {
             int amountYear = 0;
