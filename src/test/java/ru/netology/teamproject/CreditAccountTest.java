@@ -3,6 +3,7 @@ package ru.netology.teamproject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CreditAccountTest {
@@ -12,7 +13,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 0,
                 5_000,
-                15
+                15,
+                365
         );
         account.add(3_000);
 
@@ -24,7 +26,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 1,
                 5_000,
-                15
+                15,
+                365
         );
         Assertions.assertEquals(1, account.getBalance());
     }
@@ -36,7 +39,8 @@ public class CreditAccountTest {
             new CreditAccount(
                     -1,
                     5_000,
-                    15
+                    15,
+                    365
             );
         });
     }
@@ -46,7 +50,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 0,
                 5_000,
-                15
+                15,
+                365
         );
         Assertions.assertEquals(0, account.getBalance());
     }
@@ -56,7 +61,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 1000,
                 1,
-                15
+                15,
+                365
         );
         Assertions.assertEquals(1, account.getCreditLimit());
     }
@@ -68,7 +74,8 @@ public class CreditAccountTest {
             new CreditAccount(
                     1000,
                     -1,
-                    15
+                    15,
+                    365
             );
         });
     }
@@ -78,7 +85,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 1000,
                 0,
-                15
+                15,
+                365
         );
         Assertions.assertEquals(0, account.getCreditLimit());
     }
@@ -88,7 +96,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 1000,
                 5_000,
-                1
+                1,
+                365
         );
         Assertions.assertEquals(1, account.getRate());
     }
@@ -100,7 +109,9 @@ public class CreditAccountTest {
             new CreditAccount(
                     0,
                     5000,
-                    -1);
+                    -1,
+                    365
+            );
         });
     }
 
@@ -109,7 +120,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 1000,
                 5_000,
-                0
+                0,
+                365
         );
         Assertions.assertEquals(0, account.getRate());
     }
@@ -119,7 +131,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 5000,
                 2000,
-                10
+                10,
+                365
         );
         account.pay(4000);
 
@@ -131,7 +144,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 5000,
                 2000,
-                10
+                10,
+                365
         );
         account.pay(6000);
 
@@ -143,7 +157,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 5000,
                 2000,
-                10
+                10,
+                365
         );
         Assertions.assertTrue(account.pay(6000));
     }
@@ -153,7 +168,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 1000,
                 2000,
-                10
+                10,
+                365
         );
         account.pay(4000);
 
@@ -165,7 +181,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 1000,
                 2000,
-                10
+                10,
+                365
         );
 
         Assertions.assertFalse(account.pay(4000));
@@ -176,7 +193,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 2000,
                 3000,
-                10
+                10,
+                365
         );
         account.pay(5000);
 
@@ -188,7 +206,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 2000,
                 3000,
-                10
+                10,
+                365
         );
 
         Assertions.assertTrue(account.pay(5000));
@@ -199,7 +218,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 5000,
                 2000,
-                10
+                10,
+                365
         );
         account.pay(-4000);
 
@@ -211,7 +231,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 5000,
                 2000,
-                10
+                10,
+                365
         );
         account.pay(0);
 
@@ -223,7 +244,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 0,
                 5000,
-                10
+                10,
+                365
         );
         account.pay(3000);
 
@@ -235,7 +257,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 0,
                 3000,
-                10
+                10,
+                365
         );
         account.pay(4000);
 
@@ -247,7 +270,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 5000,
                 2000,
-                10
+                10,
+                365
         );
         account.add(-50);
 
@@ -259,7 +283,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 5000,
                 2000,
-                10
+                10,
+                365
         );
         Assertions.assertFalse(account.add(-50));
     }
@@ -269,7 +294,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 0,
                 2000,
-                10
+                10,
+                365
         );
         account.add(-50);
 
@@ -281,7 +307,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 5000,
                 2000,
-                10
+                10,
+                365
         );
         account.add(0);
 
@@ -293,7 +320,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 0,
                 2000,
-                10
+                10,
+                365
         );
         account.add(0);
 
@@ -305,7 +333,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 5000,
                 2000,
-                10
+                10,
+                365
         );
         account.add(1000);
 
@@ -317,7 +346,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 5000,
                 2000,
-                10
+                10,
+                365
         );
 
         Assertions.assertTrue(account.add(1000));
@@ -328,7 +358,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 200,
                 5_000,
-                15
+                15,
+                365
         );
 
         Assertions.assertEquals(0, account.yearChange());
@@ -339,7 +370,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 0,
                 5_000,
-                15
+                15,
+                365
         );
 
         Assertions.assertEquals(0, account.yearChange());
@@ -350,7 +382,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 0,
                 5_000,
-                15
+                15,
+                365
         );
         account.pay(200);
 
@@ -362,7 +395,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 0,
                 5_000,
-                15
+                15,
+                365
         );
         account.pay(555);
 
@@ -374,7 +408,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 2000,
                 5000,
-                15
+                15,
+                365
         );
         account.setRate(10);
 
@@ -386,7 +421,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 2000,
                 5000,
-                15
+                15,
+                365
         );
         account.setRate(0);
 
@@ -398,7 +434,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 2000,
                 5000,
-                15
+                15,
+                365
         );
         account.setRate(-10);
 
@@ -410,7 +447,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 2000,
                 5000,
-                15
+                15,
+                365
         );
         account.setCreditLimit(6000);
 
@@ -422,7 +460,8 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 5000,
                 15,
-                15
+                15,
+                365
         );
         account.setCreditLimit(4000);
 
@@ -434,12 +473,11 @@ public class CreditAccountTest {
         CreditAccount account = new CreditAccount(
                 2000,
                 5000,
-                15
+                15,
+                365
         );
         account.setCreditLimit(0);
 
         Assertions.assertEquals(0, account.getCreditLimit());
     }
-
-
 }
