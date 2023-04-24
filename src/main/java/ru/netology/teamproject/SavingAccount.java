@@ -1,27 +1,22 @@
 
 package ru.netology.teamproject;
 
-/**
- * Сберегательный счёт
- * Может иметь баланс только в пределах от указанного минимального до указанного максимального включительно.
- * Не может уходить в минус (минимальный баланс не может быть отрицательным).
- * Имеет ставку - количество процентов годовых на остаток.
- */
+import java.util.ArrayList;
+import java.util.List;
+
 public class SavingAccount extends Account {
     protected int minBalance;
     protected int maxBalance;
+    protected int termDays;
+    protected int daysYear = 365;
+    protected int yearPercent;
 
-    /**
-     * Создаёт новый объект сберегательного счёта с заданными параметрами.
-     * Если параметры некорректны (мин. баланс больше максимального и так далее), то
-     * должно выкидываться исключения вида IllegalArgumentException.
-     *
-     * @param initialBalance - начальный баланс
-     * @param minBalance     - минимальный баланс
-     * @param maxBalance     - максимальный баланс
-     * @param rate           - неотрицательное число, ставка в процентах годовых на остаток
-     */
-    public SavingAccount(int initialBalance, int minBalance, int maxBalance, int rate) {
+    List<Integer> dayBalanceList = new ArrayList<>();
+    List<Integer> addList = new ArrayList<>();
+    List<Integer> payList = new ArrayList<>();
+
+
+    public SavingAccount(int initialBalance, int minBalance, int maxBalance, int rate, int termDays) {
         if (rate < 0) {
             throw new IllegalArgumentException(
                     "Накопительная ставка не может быть отрицательной, а у вас: " + rate
@@ -38,116 +33,169 @@ public class SavingAccount extends Account {
                             ", а минимальный баланс : " + minBalance
             );
         }
-        if (maxBalance < minBalance) {
+        if (maxBalance <= minBalance) {
             throw new IllegalArgumentException(
-                    "Максимальный  баланс не может быть меньше минимального баланса, а у вас максимальный баланс : " + maxBalance +
+                    "Максимальный  баланс не может быть меньше или равен минимальному балансу, а у вас максимальный баланс : " + maxBalance +
                             ", а минимальный баланс : " + minBalance
             );
         }
-        if (maxBalance == minBalance) {
+        if (termDays <= 0) {
             throw new IllegalArgumentException(
-                    "Максимальный  баланс не может быть равен минимальному балансу, а у вас максимальный баланс : " + maxBalance +
-                            ", а минимальный баланс : " + minBalance
+                    "Срок не может быть равен или отрицательным, а у вас: " + termDays
             );
         }
         this.balance = initialBalance;
         this.minBalance = minBalance;
         this.maxBalance = maxBalance;
         this.rate = rate;
+        this.termDays = termDays;
     }
 
-    /**
-     * Операция оплаты с карты на указанную сумму.
-     * В результате успешного вызова этого метода, баланс должен уменьшиться
-     * на сумму покупки. Если же операция может привести к некорректному
-     * состоянию счёта (например, баланс может уйти в минус), то операция должна
-     * завершиться вернув false и ничего не поменяв на счёте.
-     *
-     * @param amount - сумма покупки
-     * @return true если операция прошла успешно, false иначе.
-     */
-    @Override
     public boolean pay(int amount) {
-        if (amount < 0) {
+        if (amount <= 0) {
             return false;
         }
-        if (balance - amount < minBalance) {
+        if (balance - amount + yearPercent < minBalance) {
             return false;
-        } else {
+        }
+        if (amount <= yearPercent) {
+            yearPercent = yearPercent - amount;
+            payList.add(amount);
+            yearPercent = 0;
             return true;
         }
+        balance = balance - amount + yearPercent;
+        payList.add(amount);
+        return true;
     }
 
-
-    public int approvalPay(int amount) {
-        if (amount < 0) {
-            return balance;
+    public int getAmountPay() {
+        int amountPay = 0;
+        for (int i : payList) {
+            amountPay = amountPay + i;
         }
-        if (balance - amount < minBalance) {
-            return balance;
-        } else {
-            balance = balance - amount;
-            return balance;
-        }
+        return amountPay;
     }
 
-    /**
-     * Операция пополнения карты на указанную сумму.
-     * В результате успешного вызова этого метода, баланс должен увеличиться
-     * на сумму покупки. Если же операция может привести к некорректному
-     * состоянию счёта, то операция должна
-     * завершиться вернув false и ничего не поменяв на счёте.
-     *
-     * @param amount - сумма пополнения
-     * @param amount
-     * @return true если операция прошла успешно, false иначе.
-     * @return
-     */
+    public void clearPayList() {
+        payList.clear();
+    }
 
     @Override
     public boolean add(int amount) {
-        if (amount < 0) {
+        if (amount <= 0) {
             return false;
         }
-        if (balance + amount > maxBalance) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    public int approvalAdd(int amount) {
-        if (amount < 0) {
-            return balance;
-        }
-        if (balance + amount > maxBalance) {
-            return balance;
-        } else {
+        if (balance + amount <= maxBalance) {
             balance = balance + amount;
-            return balance;
+            addList.add(amount);
+            return true;
+        } else {
+            return false;
         }
-        /**
-         * Операция расчёта процентов на остаток счёта при условии, что
-         * счёт не будет меняться год. Сумма процентов приводится к целому
-         * числу через отбрасывание дробной части (так и работает целочисленное деление).
-         * Пример: если на счёте 200 рублей, то при ставке 15% ответ должен быть 30.
-         *
-         * @return
-         */
-        //@Override
-        // public int yearChange() {
-        //  return balance / 100 * rate;
-        // }
-
-        // public int getMinBalance() {
-        //     return minBalance;
-        // }
-
-        //  public int getMaxBalance() {
-        //     return maxBalance;
     }
-    //   public SavingAccount getSavingAccount(SavingAccount account) {
-    //      return account;
-    //  }
+
+    public int getAmountAdd() {
+        int amountAdd = 0;
+        for (int i : addList) {
+            amountAdd = amountAdd + i;
+        }
+        return amountAdd;
+    }
+
+    public void clearAddList() {
+        addList.clear();
+    }
+
+    public List<Integer> getAddList() {
+        return addList;
+    }
+
+    public List<Integer> getPayList() {
+        return payList;
+    }
+
+    @Override
+    public int yearChange() {
+        int change = 0;
+
+        if (termDays == daysYear) {
+            change = balance * rate / 100;
+        }
+        return change;
+    }
+
+    public void addDayBalance() {
+        dayBalanceList.add(balance);
+    }
+
+    public void yearPercent() {
+        int amount = 0;
+        for (int i : dayBalanceList) {
+            amount = i + amount;
+        }
+        double yearPercent = (double) amount / daysYear * rate / 100;
+        this.yearPercent = (int) yearPercent;
+        dayBalanceList.clear();
+
+    }
+
+    public List<Integer> getDayBalanceList() {
+        return dayBalanceList;
+    }
+
+    @Override
+    public void setRate(int rate) {
+        if (rate < 0) {
+            throw new IllegalArgumentException(
+                    "Накопительная ставка не может быть отрицательной, а у вас: " + rate
+            );
+        }
+        this.rate = rate;
+    }
+
+    public int getYearPercent() {
+        return yearPercent;
+    }
+
+    public int getMinBalance() {
+        return minBalance;
+    }
+
+    public void setMinBalance(int minBalance) {
+        if (minBalance < 0) {
+            throw new IllegalArgumentException(
+                    "Минимальный баланс не может быть отрицательным, а у вас: " + minBalance
+            );
+        }
+        if (maxBalance <= minBalance) {
+            throw new IllegalArgumentException(
+                    "Максимальный  баланс не может быть меньше или равен минимальному балансу, а у вас максимальный баланс : " + maxBalance +
+                            ", а минимальный баланс : " + minBalance
+            );
+        }
+        this.minBalance = minBalance;
+    }
+
+    public int getMaxBalance() {
+        return maxBalance;
+    }
+
+    public void setMaxBalance(int maxBalance) {
+        if (maxBalance <= minBalance) {
+            throw new IllegalArgumentException(
+                    "Максимальный  баланс не может быть меньше или равен минимальному балансу, а у вас максимальный баланс : " + maxBalance +
+                            ", а минимальный баланс : " + minBalance
+            );
+        }
+        this.minBalance = minBalance;
+    }
+
+    public SavingAccount getSavingAccount(SavingAccount account) {
+        return account;
+    }
 }
+
+
+
 

@@ -8,90 +8,80 @@ public class SavingAccountTest {
     @Test
     void shouldTrowIllegalArgumentExceptionIfNegativeRateOnSavingAccount() {
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new SavingAccount(
-                    2_000,
-                    1_000,
-                    10_000,
-                    -1
-            );
-        });
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new SavingAccount(
+                2_000,
+                1_000,
+                10_000,
+                -1
+        ));
     }
 
     @Test
     void shouldTrowIllegalArgumentExceptionIfNegativeMinBalanceOnSavingAccount() {
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new SavingAccount(
-                    2_000,
-                    -1,
-                    10_000,
-                    1
-            );
-        });
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new SavingAccount(
+                2_000,
+                -1,
+                10_000,
+                1
+        ));
     }
 
     @Test
     void shouldTrowIllegalArgumentExceptionIfInitialBalanceLessThanMinBalanceOnSavingAccount() {
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new SavingAccount(
-                    999,
-                    1_000,
-                    10_000,
-                    1
-            );
-        });
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new SavingAccount(
+                999,
+                1_000,
+                10_000,
+                1
+        ));
     }
 
     @Test
     void shouldTrowIllegalArgumentExceptionIfMaxBalanceLessThanMinBalanceOnSavingAccount() {
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new SavingAccount(
-                    2_000,
-                    1_000,
-                    999,
-                    1
-            );
-        });
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new SavingAccount(
+                2_000,
+                1_000,
+                999,
+                1
+        ));
     }
 
     @Test
     void shouldTrowIllegalArgumentExceptionIfMaxBalanceEqualsMinBalanceOnSavingAccount() {
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new SavingAccount(
-                    2_000,
-                    1_000,
-                    1_000,
-                    1
-            );
-        });
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new SavingAccount(
+                2_000,
+                1_000,
+                1_000,
+                1
+        ));
     }
 
-    // @Test
-    //public void shouldCreateSavingAccountIfInitialBalanceEqualsMinBalance() {
-    //SavingAccount account = new SavingAccount(
-    //       1_000,
-    //       1_000,
-    //        10_000,
-    //        5
-    // );
+    @Test
+    public void shouldCreateSavingAccountIfInitialBalanceEqualsMinBalance() {
+        SavingAccount account = new SavingAccount(
+                1_000,
+                1_000,
+                10_000,
+                5
+        );
 
-    //   Assertions.assertEquals(account, account.getSavingAccount(account));
-    // }
+        Assertions.assertEquals(account, account.getSavingAccount(account));
+    }
 
-    //  @Test
-    // public void shouldCreateSavingAccountIfRateIsZero() {
-    // SavingAccount account = new SavingAccount(
-    //       2_000,
-    //        1_000,
-    //        10_000,
-    //          0);
+    @Test
+    public void shouldCreateSavingAccountIfRateIsZero() {
+        SavingAccount account = new SavingAccount(
+                2_000,
+                1_000,
+                10_000,
+                0);
 
-    //  Assertions.assertEquals(account, account.getSavingAccount(account));
-    //   }
+        Assertions.assertEquals(account, account.getSavingAccount(account));
+    }
 
     @Test
     void shouldChangeBalanceToPurchaseAmountAtPay() {
@@ -101,9 +91,9 @@ public class SavingAccountTest {
                 10_000,
                 5
         );
-        account.pay(500);
+        account.approvalPay(500);
 
-        Assertions.assertEquals(2_000 - 500, account.getBalance());
+        Assertions.assertEquals(1500, account.getBalance());
     }
 
     @Test
@@ -359,38 +349,38 @@ public class SavingAccountTest {
         Assertions.assertEquals(108, account.yearChange());
     }
 
-    @Test
-    void shouldCalculatePercentOnBalanceWithResultOne() {
+      @Test
+     void shouldCalculatePercentOnBalanceWithResultOne() {
         SavingAccount account = new SavingAccount(
-                20,
-                1_000,
-                10_000,
-                5
-        );
-        Assertions.assertEquals(1, account.yearChange());
-    }
+              20,
+              20,
+             10_000,
+              5
+      );
+      Assertions.assertEquals(1, account.yearChange());
+     }
 
     @Test
-    void shouldCalculatePercentOnBalanceWithResultLessThanOne() {
+     void shouldCalculatePercentOnBalanceWithResultLessThanOne() {
         SavingAccount account = new SavingAccount(
                 10,
-                1_000,
-                10_000,
-                5
-        );
-        Assertions.assertEquals(0, account.yearChange());
-    }
+              10,
+               10_000,
+               5
+      );
+      Assertions.assertEquals(0, account.yearChange());
+     }
 
-    @Test
-    void shouldCalculatePercentOnBalanceWhenBalanceIsZero() {
-        SavingAccount account = new SavingAccount(
+     @Test
+     void shouldCalculatePercentOnBalanceWhenBalanceIsZero() {
+         SavingAccount account = new SavingAccount(
+                 0,
                 0,
-                1_000,
-                10_000,
-                5
-        );
-        Assertions.assertEquals(0, account.yearChange());
-    }
+               10_000,
+              5
+      );
+      Assertions.assertEquals(0, account.yearChange());
+      }
 
     @Test
     void shouldCalculatePercentOnBalanceWhenRateIsZero() {
