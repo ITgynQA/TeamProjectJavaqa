@@ -1,5 +1,9 @@
 
 package ru.netology.teamproject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Кредитный счёт
  * Может иметь баланс вплоть до отрицательного, но до указанного кредитного лимита.
@@ -7,7 +11,10 @@ package ru.netology.teamproject;
  * При создании, баланс кредитного счёта изначально выставляется в кредитный лимит.
  */
 public class CreditAccount extends Account {
+
     protected int creditLimit;
+    protected int daysYear = 365;
+    List<Integer> dayBalance = new ArrayList<>();
 
     /**
      * Создаёт новый объект кредитного счёта с заданными параметрами.
@@ -18,14 +25,29 @@ public class CreditAccount extends Account {
      * @param rate - неотрицательное число, ставка кредитования для расчёта долга за отрицательный баланс
      */
     public CreditAccount(int initialBalance, int creditLimit, int rate) {
-        if (rate <= 0) {
+        super(initialBalance, rate);
+        if (rate < 0) {
             throw new IllegalArgumentException(
                     "Накопительная ставка не может быть отрицательной, а у вас: " + rate
             );
         }
-        this.balance = initialBalance;
+        if (initialBalance < 0) {
+            throw new IllegalArgumentException(
+                    "Начальный баланс не может быть отрицательным, а у вас: " + initialBalance
+            );
+        }
+        if (creditLimit < 0) {
+            throw new IllegalArgumentException(
+                    "Кредитный лимит не может быть отрицательным, а у вас: " + creditLimit
+            );
+        }
+        if (initialBalance != creditLimit) {
+            throw new IllegalArgumentException(
+                    "Начальный баланс должен быть равен кредитному лимиту, а у вас: баланс " + initialBalance +
+                    " ,а лимит " + creditLimit
+            );
+        }
         this.creditLimit = creditLimit;
-        this.rate = rate;
     }
 
     /**
@@ -42,9 +64,8 @@ public class CreditAccount extends Account {
         if (amount <= 0) {
             return false;
         }
-        balance = balance - amount;
-        if (balance > -creditLimit) {
-            balance = -amount;
+        if (balance - amount >= -creditLimit) {
+            balance = balance - amount;
             return true;
         } else {
             return false;
@@ -67,7 +88,7 @@ public class CreditAccount extends Account {
         if (amount <= 0) {
             return false;
         }
-        balance = amount;
+        balance = balance + amount;
         return true;
     }
 
@@ -80,11 +101,51 @@ public class CreditAccount extends Account {
      * @return
      */
     @Override
-    public int yearChange() {
-        return balance / 100 * rate;
+    public int yearChange(int month) {
+        int change = 0;
+        if (balance >= 0) {
+            return change;
+        }
+        if (month == 12) {
+            change = balance * rate / 100;
+        }
+        return change;
     }
 
     public int getCreditLimit() {
         return creditLimit;
+    }
+
+    public void setCreditLimit(int creditLimit) {
+        if (creditLimit < 0) {
+            throw new IllegalArgumentException(
+                    "Кредитный лимит не может быть отрицательным, а у вас: " + creditLimit
+            );
+        }
+        this.creditLimit = creditLimit;
+    }
+
+    public CreditAccount getCreditAccount(CreditAccount creditAccount) {
+        return creditAccount;
+    }
+
+    public void days() {
+        dayBalance.add(balance);
+    }
+
+    @Override
+    public boolean addYearPercent() {
+        if(dayBalance.size() == daysYear) {
+            int amountYear = 0;
+            for (int i : dayBalance) {
+                if(i < 0) {
+                    amountYear = i + amountYear;
+                    double yearPercent = (double) amountYear / daysYear * rate / 100;
+                    balance = (int) yearPercent + balance;
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

@@ -4,6 +4,11 @@ public class Account {
     protected int balance;
     protected int rate;
 
+    public Account(int balance, int rate) {
+        this.balance = balance;
+        this.rate = rate;
+    }
+
     public boolean pay(int amount) {
         return false;
     }
@@ -12,8 +17,12 @@ public class Account {
         return false;
     }
 
-    public int yearChange() {
+    public int yearChange(int month) {
         return 0;
+    }
+
+    public boolean addYearPercent() {
+        return false;
     }
 
     public int getBalance() {
@@ -25,6 +34,11 @@ public class Account {
     }
 
     public void setRate(int rate) {
+        if (rate < 0) {
+            throw new IllegalArgumentException(
+                    "Накопительная ставка не может быть отрицательной, а у вас: " + rate
+            );
+        }
         this.rate = rate;
     }
 }
