@@ -41,7 +41,7 @@ public class SavingAccount extends Account {
         }
         if (termDays <= 0) {
             throw new IllegalArgumentException(
-                    "Срок не может быть равен или отрицательным, а у вас: " + termDays
+                    "Срок не может быть равен нулю или отрицательным, а у вас: " + termDays
             );
         }
         this.balance = initialBalance;
@@ -61,11 +61,11 @@ public class SavingAccount extends Account {
         if (amount <= yearPercent) {
             yearPercent = yearPercent - amount;
             payList.add(amount);
-            yearPercent = 0;
             return true;
         }
         balance = balance - amount + yearPercent;
         payList.add(amount);
+        yearPercent = 0;
         return true;
     }
 
@@ -188,7 +188,7 @@ public class SavingAccount extends Account {
                             ", а минимальный баланс : " + minBalance
             );
         }
-        this.minBalance = minBalance;
+        this.maxBalance = maxBalance;
     }
 
     public SavingAccount getSavingAccount(SavingAccount account) {
