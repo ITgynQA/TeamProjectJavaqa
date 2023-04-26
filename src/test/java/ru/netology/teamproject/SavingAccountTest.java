@@ -124,7 +124,6 @@ public class SavingAccountTest {
 
     @Test
     void shouldSetRate() {
-
         SavingAccount account = new SavingAccount(
                 2_000,
                 1_000,
@@ -132,7 +131,6 @@ public class SavingAccountTest {
                 1,
                 365
         );
-
         account.setRate(0);
 
         Assertions.assertEquals(0, account.getRate());
@@ -140,7 +138,6 @@ public class SavingAccountTest {
 
     @Test
     void shouldTrowIllegalArgumentExceptionIfSetMinBalanceNegativeAtSavingAccount() {
-
         SavingAccount account = new SavingAccount(
                 2_000,
                 1_000,
@@ -156,7 +153,6 @@ public class SavingAccountTest {
 
     @Test
     void shouldTrowIllegalArgumentExceptionIfSetMinBalanceMoreThanMaxBalanceAtSavingAccount() {
-
         SavingAccount account = new SavingAccount(
                 2_000,
                 1_000,
@@ -172,7 +168,6 @@ public class SavingAccountTest {
 
     @Test
     void shouldTrowIllegalArgumentExceptionIfSetMinBalanceEqualsMaxBalanceAtSavingAccount() {
-
         SavingAccount account = new SavingAccount(
                 2_000,
                 1_000,
@@ -185,7 +180,6 @@ public class SavingAccountTest {
             account.setMinBalance(10_000);
         });
     }
-
 
     @Test
     void shouldSetMinBalance() {
