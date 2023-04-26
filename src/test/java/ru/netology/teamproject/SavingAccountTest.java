@@ -293,7 +293,7 @@ public class SavingAccountTest {
     }
 
     @Test
-    void DoNotShouldChangeBalanceIfAmountIsZeroAtPay() {
+    void shouldNotChangeBalanceIfAmountIsZeroAtPay() {
         SavingAccount account = new SavingAccount(
                 2_000,
                 1_000,
@@ -320,7 +320,7 @@ public class SavingAccountTest {
     }
 
     @Test
-    void DoNotShouldChangeBalanceIfAmountIsNegativeAtPay() {
+    void shouldNotChangeBalanceIfAmountIsNegativeAtPay() {
         SavingAccount account = new SavingAccount(
                 2_000,
                 1_000,
@@ -346,7 +346,7 @@ public class SavingAccountTest {
     }
 
     @Test
-    void DoNotShouldChangeBalanceIfAfterAmountBalanceLessThanMinBalanceAtPay() {
+    void shouldNotChangeBalanceIfAfterAmountBalanceLessThanMinBalanceAtPay() {
         SavingAccount account = new SavingAccount(
                 100_000,
                 1_000,
@@ -508,7 +508,7 @@ public class SavingAccountTest {
     }
 
     @Test
-    void DoNotShouldChangeBalanceAtAddIfAmountEqualsZero() {
+    void shouldNotChangeBalanceAtAddIfAmountEqualsZero() {
         SavingAccount account = new SavingAccount(
                 2_000,
                 1_000,
@@ -535,7 +535,7 @@ public class SavingAccountTest {
     }
 
     @Test
-    void DoNotShouldChangeBalanceAtAddIfAmountNegative() {
+    void shouldNotChangeBalanceAtAddIfAmountNegative() {
         SavingAccount account = new SavingAccount(
                 2_000,
                 1_000,
@@ -562,7 +562,7 @@ public class SavingAccountTest {
     }
 
     @Test
-    void DoNotShouldChangeBalanceAtAddIfAfterAmountBalanceMoreThanMaxBalance() {
+    void shouldNotChangeBalanceAtAddIfAfterAmountBalanceMoreThanMaxBalance() {
         SavingAccount account = new SavingAccount(
                 2_000,
                 1_000,
