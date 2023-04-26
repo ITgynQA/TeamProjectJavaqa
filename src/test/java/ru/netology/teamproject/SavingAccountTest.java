@@ -108,7 +108,6 @@ public class SavingAccountTest {
 
     @Test
     void shouldTrowIllegalArgumentExceptionIfSetRateNegativeAtSavingAccount() {
-
         SavingAccount account = new SavingAccount(
                 2_000,
                 1_000,
@@ -124,7 +123,6 @@ public class SavingAccountTest {
 
     @Test
     void shouldSetRate() {
-
         SavingAccount account = new SavingAccount(
                 2_000,
                 1_000,
@@ -132,7 +130,6 @@ public class SavingAccountTest {
                 1,
                 365
         );
-
         account.setRate(0);
 
         Assertions.assertEquals(0, account.getRate());
@@ -140,7 +137,6 @@ public class SavingAccountTest {
 
     @Test
     void shouldTrowIllegalArgumentExceptionIfSetMinBalanceNegativeAtSavingAccount() {
-
         SavingAccount account = new SavingAccount(
                 2_000,
                 1_000,
@@ -156,7 +152,6 @@ public class SavingAccountTest {
 
     @Test
     void shouldTrowIllegalArgumentExceptionIfSetMinBalanceMoreThanMaxBalanceAtSavingAccount() {
-
         SavingAccount account = new SavingAccount(
                 2_000,
                 1_000,
@@ -172,7 +167,6 @@ public class SavingAccountTest {
 
     @Test
     void shouldTrowIllegalArgumentExceptionIfSetMinBalanceEqualsMaxBalanceAtSavingAccount() {
-
         SavingAccount account = new SavingAccount(
                 2_000,
                 1_000,
@@ -186,10 +180,8 @@ public class SavingAccountTest {
         });
     }
 
-
     @Test
     void shouldSetMinBalance() {
-
         SavingAccount account = new SavingAccount(
                 2_000,
                 1_000,
@@ -197,7 +189,6 @@ public class SavingAccountTest {
                 1,
                 365
         );
-
         account.setMinBalance(0);
 
         Assertions.assertEquals(0, account.getMinBalance());
@@ -205,7 +196,6 @@ public class SavingAccountTest {
 
     @Test
     void shouldTrowIllegalArgumentExceptionIfSetMaxBalanceEqualsMinBalanceAtSavingAccount() {
-
         SavingAccount account = new SavingAccount(
                 2_000,
                 1_000,
@@ -221,7 +211,6 @@ public class SavingAccountTest {
 
     @Test
     void shouldTrowIllegalArgumentExceptionIfSetMaxBalanceLessThanMinBalanceAtSavingAccount() {
-
         SavingAccount account = new SavingAccount(
                 2_000,
                 1_000,
@@ -237,7 +226,6 @@ public class SavingAccountTest {
 
     @Test
     void shouldSetMaxBalance() {
-
         SavingAccount account = new SavingAccount(
                 2_000,
                 1_000,
@@ -245,7 +233,6 @@ public class SavingAccountTest {
                 1,
                 365
         );
-
         account.setMaxBalance(11_000);
 
         Assertions.assertEquals(11_000, account.getMaxBalance());
@@ -328,6 +315,7 @@ public class SavingAccountTest {
                 5,
                 365
         );
+
         Assertions.assertFalse(account.pay(0));
     }
 
@@ -366,7 +354,6 @@ public class SavingAccountTest {
                 15,
                 365
         );
-
         account.addDayBalance();
         account.addDayBalance();
         account.addDayBalance();
@@ -386,12 +373,12 @@ public class SavingAccountTest {
                 15,
                 365
         );
-
         account.addDayBalance();
         account.addDayBalance();
         account.addDayBalance();
         account.addDayBalance();
         account.yearPercent();
+
         Assertions.assertFalse(account.pay(100_165));
     }
 
@@ -404,13 +391,13 @@ public class SavingAccountTest {
                 15,
                 365
         );
-
         account.addDayBalance();
         account.addDayBalance();
         account.addDayBalance();
         account.addDayBalance();
         account.yearPercent();
         account.pay(99_164);
+
         Assertions.assertEquals(account.getMinBalance(), account.getBalance());
     }
 
@@ -423,12 +410,12 @@ public class SavingAccountTest {
                 15,
                 365
         );
-
         account.addDayBalance();
         account.addDayBalance();
         account.addDayBalance();
         account.addDayBalance();
         account.yearPercent();
+
         Assertions.assertTrue(account.pay(99_164));
     }
 
@@ -441,13 +428,13 @@ public class SavingAccountTest {
                 15,
                 365
         );
-
         account.addDayBalance();
         account.addDayBalance();
         account.addDayBalance();
         account.addDayBalance();
         account.yearPercent();
         account.pay(1000);
+
         Assertions.assertEquals(0, account.getYearPercent());
     }
 
@@ -460,13 +447,13 @@ public class SavingAccountTest {
                 15,
                 365
         );
-
         account.addDayBalance();
         account.addDayBalance();
         account.addDayBalance();
         account.addDayBalance();
         account.yearPercent();
         account.pay(100);
+
         Assertions.assertEquals(64, account.getYearPercent());
     }
 
@@ -479,7 +466,6 @@ public class SavingAccountTest {
                 15,
                 365
         );
-
         account.pay(100);
         account.pay(1_000);
         account.pay(1_300);
@@ -490,7 +476,6 @@ public class SavingAccountTest {
         expected.add(1_000);
         expected.add(1_300);
         expected.add(500);
-
 
         Assertions.assertEquals(expected, account.getPayList());
     }
@@ -518,6 +503,7 @@ public class SavingAccountTest {
                 5,
                 365
         );
+
         Assertions.assertTrue(account.add(3_000));
     }
 
@@ -530,7 +516,6 @@ public class SavingAccountTest {
                 5,
                 365
         );
-
         account.add(0);
 
         Assertions.assertEquals(2_000, account.getBalance());
@@ -545,6 +530,7 @@ public class SavingAccountTest {
                 5,
                 365
         );
+
         Assertions.assertFalse(account.add(0));
     }
 
@@ -557,7 +543,6 @@ public class SavingAccountTest {
                 5,
                 365
         );
-
         account.add(-1);
 
         Assertions.assertEquals(2_000, account.getBalance());
@@ -572,6 +557,7 @@ public class SavingAccountTest {
                 5,
                 365
         );
+
         Assertions.assertFalse(account.add(-1));
     }
 
@@ -584,7 +570,6 @@ public class SavingAccountTest {
                 5,
                 365
         );
-
         account.add(8_001);
 
         Assertions.assertEquals(2_000, account.getBalance());
@@ -599,6 +584,7 @@ public class SavingAccountTest {
                 5,
                 365
         );
+
         Assertions.assertFalse(account.add(8_001));
     }
 
@@ -611,7 +597,6 @@ public class SavingAccountTest {
                 5,
                 365
         );
-
         account.add(8_000);
 
         Assertions.assertEquals(account.getMaxBalance(), account.getBalance());
@@ -626,6 +611,7 @@ public class SavingAccountTest {
                 5,
                 365
         );
+
         Assertions.assertTrue(account.add(8_000));
     }
 
@@ -638,7 +624,6 @@ public class SavingAccountTest {
                 5,
                 365
         );
-
         account.add(150);
         account.add(1_500);
         account.add(250);
@@ -662,6 +647,7 @@ public class SavingAccountTest {
                 5,
                 365
         );
+
         Assertions.assertEquals(100, account.yearChange());
     }
 
@@ -674,6 +660,7 @@ public class SavingAccountTest {
                 5,
                 365
         );
+
         Assertions.assertEquals(108, account.yearChange());
     }
 
@@ -686,6 +673,7 @@ public class SavingAccountTest {
                 5,
                 365
         );
+
         Assertions.assertEquals(1, account.yearChange());
     }
 
@@ -698,6 +686,7 @@ public class SavingAccountTest {
                 5,
                 365
         );
+
         Assertions.assertEquals(0, account.yearChange());
     }
 
@@ -710,6 +699,7 @@ public class SavingAccountTest {
                 5,
                 365
         );
+
         Assertions.assertEquals(0, account.yearChange());
     }
 
@@ -722,6 +712,7 @@ public class SavingAccountTest {
                 0,
                 365
         );
+
         Assertions.assertEquals(0, account.yearChange());
     }
 
@@ -734,6 +725,7 @@ public class SavingAccountTest {
                 15,
                 364
         );
+
         Assertions.assertEquals(0, account.yearChange());
     }
 
@@ -746,7 +738,6 @@ public class SavingAccountTest {
                 15,
                 365
         );
-
         account.pay(150);
         account.pay(250);
         account.pay(300);
@@ -764,7 +755,6 @@ public class SavingAccountTest {
                 15,
                 365
         );
-
         account.pay(150);
 
         Assertions.assertEquals(150, account.getAmountPay());
@@ -792,7 +782,6 @@ public class SavingAccountTest {
                 15,
                 365
         );
-
         account.pay(150);
         account.pay(1_500);
         account.pay(250);
@@ -813,7 +802,6 @@ public class SavingAccountTest {
                 15,
                 365
         );
-
         account.add(150);
         account.add(250);
         account.add(500);
@@ -831,7 +819,6 @@ public class SavingAccountTest {
                 15,
                 365
         );
-
         account.add(150);
 
         Assertions.assertEquals(150, account.getAmountAdd());
@@ -859,7 +846,6 @@ public class SavingAccountTest {
                 15,
                 365
         );
-
         account.add(150);
         account.add(1_500);
         account.add(250);
