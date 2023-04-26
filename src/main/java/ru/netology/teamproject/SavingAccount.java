@@ -61,11 +61,11 @@ public class SavingAccount extends Account {
         if (amount <= yearPercent) {
             yearPercent = yearPercent - amount;
             payList.add(amount);
-            yearPercent = 0;
             return true;
         }
         balance = balance - amount + yearPercent;
         payList.add(amount);
+        yearPercent = 0;
         return true;
     }
 
@@ -188,7 +188,7 @@ public class SavingAccount extends Account {
                             ", а минимальный баланс : " + minBalance
             );
         }
-        this.minBalance = minBalance;
+        this.maxBalance = maxBalance;
     }
 
     public SavingAccount getSavingAccount(SavingAccount account) {
