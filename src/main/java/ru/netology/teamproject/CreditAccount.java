@@ -57,7 +57,7 @@ public class CreditAccount extends Account {
 
     public int getAmountPay() {
         int amountPay = 0;
-        for(int i : payList) {
+        for (int i : payList) {
             amountPay = amountPay + i;
         }
         return amountPay;
@@ -67,7 +67,7 @@ public class CreditAccount extends Account {
         payList.clear();
     }
 
-    public List<Integer> getPayListList() {
+    public List<Integer> getPayList() {
         return payList;
     }
 
@@ -89,7 +89,7 @@ public class CreditAccount extends Account {
 
     public int getAmountAdd() {
         int amountAdd = 0;
-        for(int i : addList) {
+        for (int i : addList) {
             amountAdd = amountAdd + i;
         }
         return amountAdd;
@@ -163,8 +163,7 @@ public class CreditAccount extends Account {
         this.creditLimit = creditLimit;
     }
 
-    public CreditAccount getCreditAccount(CreditAccount creditAccount) {
-        return creditAccount;
+    public CreditAccount getCreditAccount(CreditAccount account) {
+        return account;
     }
-
 }
