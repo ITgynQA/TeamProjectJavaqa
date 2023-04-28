@@ -25,6 +25,11 @@ public class Account {
     }
 
     public void setRate(int rate) {
+        if (rate < 0) {
+            throw new IllegalArgumentException(
+                    "Накопительная ставка не может быть отрицательной, а у вас: " + rate
+            );
+        }
         this.rate = rate;
     }
 }

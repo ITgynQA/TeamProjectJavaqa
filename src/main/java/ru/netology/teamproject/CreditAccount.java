@@ -1,90 +1,169 @@
-
 package ru.netology.teamproject;
-/**
- * Кредитный счёт
- * Может иметь баланс вплоть до отрицательного, но до указанного кредитного лимита.
- * Имеет ставку - количество процентов годовых на сумму на балансе, если она меньше нуля.
- * При создании, баланс кредитного счёта изначально выставляется в кредитный лимит.
- */
-public class CreditAccount extends Account {
-    protected int creditLimit;
 
-    /**
-     * Создаёт новый объект кредитного счёта с заданными параметрами.
-     * Если параметры некорректны (кредитный лимит отрицательный и так далее), то
-     * должно выкидываться исключения вида IllegalArgumentException.
-     * @param initialBalance - неотрицательное число, начальный баланс для счёта
-     * @param creditLimit - неотрицательное число, максимальная сумма которую можно задолжать банку
-     * @param rate - неотрицательное число, ставка кредитования для расчёта долга за отрицательный баланс
-     */
-    public CreditAccount(int initialBalance, int creditLimit, int rate) {
-        if (rate <= 0) {
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class CreditAccount extends Account {
+
+    protected int creditLimit;
+    protected int termDays;
+    protected int daysYear = 365;
+    protected int yearPercent;
+    List<Integer> dayBalanceList = new ArrayList<>();
+    List<Integer> addList = new ArrayList<>();
+    List<Integer> payList = new ArrayList<>();
+
+    public CreditAccount(int initialBalance, int creditLimit, int rate, int termDays) {
+        if (rate < 0) {
             throw new IllegalArgumentException(
                     "Накопительная ставка не может быть отрицательной, а у вас: " + rate
+            );
+        }
+        if (initialBalance < 0) {
+            throw new IllegalArgumentException(
+                    "Начальный баланс не может быть отрицательным, а у вас: " + initialBalance
+            );
+        }
+        if (creditLimit < 0) {
+            throw new IllegalArgumentException(
+                    "Кредитный лимит не может быть отрицательным, а у вас: " + creditLimit
+            );
+        }
+        if (termDays <= 0) {
+            throw new IllegalArgumentException(
+                    "Срок не может быть равен нулю или отрицательным, а у вас: " + termDays
             );
         }
         this.balance = initialBalance;
         this.creditLimit = creditLimit;
         this.rate = rate;
+        this.termDays = termDays;
     }
 
-    /**
-     * Операция оплаты с карты на указанную сумму.
-     * В результате успешного вызова этого метода, баланс должен уменьшиться
-     * на сумму покупки. Если же операция может привести к некорректному
-     * состоянию счёта (например, баланс может уйти в минус), то операция должна
-     * завершиться вернув false и ничего не поменяв на счёте.
-     * @param amount - сумма покупки
-     * @return true если операция прошла успешно, false иначе.
-     */
     @Override
     public boolean pay(int amount) {
         if (amount <= 0) {
             return false;
         }
-        balance = balance - amount;
-        if (balance > -creditLimit) {
-            balance = -amount;
+        if (balance - amount >= -creditLimit) {
+            balance = balance - amount;
+            payList.add(amount);
             return true;
         } else {
             return false;
         }
     }
 
-    /**
-     * Операция пополнения карты на указанную сумму.
-     * В результате успешного вызова этого метода, баланс должен увеличиться
-     * на сумму покупки. Если же операция может привести к некорректному
-     * состоянию счёта, то операция должна
-     * завершиться вернув false и ничего не поменяв на счёте.
-     * @param amount - сумма пополнения
-     * @return true если операция прошла успешно, false иначе.
-     * @param amount
-     * @return
-     */
+    public int getAmountPay() {
+        int amountPay = 0;
+        for (int i : payList) {
+            amountPay = amountPay + i;
+        }
+        return amountPay;
+    }
+
+    public void clearPayList() {
+        payList.clear();
+    }
+
+    public List<Integer> getPayList() {
+        return payList;
+    }
+
     @Override
     public boolean add(int amount) {
         if (amount <= 0) {
             return false;
         }
-        balance = amount;
+        if (amount <= -yearPercent) {
+            yearPercent = yearPercent + amount;
+            addList.add(amount);
+            return true;
+        }
+        addList.add(amount);
+        balance = balance + amount + yearPercent;
+        yearPercent = 0;
         return true;
     }
 
-    /**
-     * Операция расчёта процентов на отрицательный баланс счёта при условии, что
-     * счёт не будет меняться год. Сумма процентов приводится к целому
-     * числу через отбрасывание дробной части (так и работает целочисленное деление).
-     * Пример: если на счёте -200 рублей, то при ставке 15% ответ должен быть -30.
-     * Пример 2: если на счёте 200 рублей, то при любой ставке ответ должен быть 0.
-     * @return
-     */
+    public int getAmountAdd() {
+        int amountAdd = 0;
+        for (int i : addList) {
+            amountAdd = amountAdd + i;
+        }
+        return amountAdd;
+    }
+
+    public void clearAddList() {
+        addList.clear();
+    }
+
+    public List<Integer> getAddList() {
+        return addList;
+    }
+
     @Override
     public int yearChange() {
-        return balance / 100 * rate;
+        int change = 0;
+        if (balance >= 0) {
+            return change;
+        }
+        if (termDays == daysYear) {
+            change = balance * rate / 100;
+        }
+        return change;
     }
+
+    public void addDayBalance() {
+        dayBalanceList.add(balance);
+    }
+
+    public List<Integer> getDayBalanceList() {
+        return dayBalanceList;
+    }
+
+    public void yearPercent() {
+        int amount = 0;
+        for (int i : dayBalanceList) {
+            if (i < 0) {
+                amount = i + amount;
+            }
+        }
+        double yearPercent = (double) amount / daysYear * rate / 100;
+        this.yearPercent = (int) yearPercent;
+        dayBalanceList.clear();
+    }
+
+    @Override
+    public void setRate(int rate) {
+        if (rate < 0) {
+            throw new IllegalArgumentException(
+                    "Накопительная ставка не может быть отрицательной, а у вас: " + rate
+            );
+        }
+        this.rate = rate;
+    }
+
+    public int getYearPercent() {
+        return yearPercent;
+    }
+
 
     public int getCreditLimit() {
         return creditLimit;
+    }
+
+    public void setCreditLimit(int creditLimit) {
+        if (creditLimit < 0) {
+            throw new IllegalArgumentException(
+                    "Кредитный лимит не может быть отрицательным, а у вас: " + creditLimit
+            );
+        }
+        this.creditLimit = creditLimit;
+    }
+
+    public CreditAccount getCreditAccount(CreditAccount account) {
+        return account;
     }
 }
