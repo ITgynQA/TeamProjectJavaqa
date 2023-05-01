@@ -1,13 +1,18 @@
 
 package ru.netology.teamproject;
+
 public class Bank {
-    
+
     public boolean transfer(Account from, Account to, int amount) {
         if (amount <= 0) {
             return false;
         }
-        if (from.pay(amount)) {
-            to.add(amount);
+        if (!from.pay(amount)) {
+            return false;
+        }
+        if (!to.add(amount)) {
+            from.amountReturn(amount);
+            return false;
         }
         return true;
     }

@@ -32,4 +32,8 @@ public class Account {
         }
         this.rate = rate;
     }
+
+    public void amountReturn(int amount) {
+
+    }
 }

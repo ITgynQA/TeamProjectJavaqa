@@ -194,4 +194,15 @@ public class SavingAccount extends Account {
     public SavingAccount getSavingAccount(SavingAccount account) {
         return account;
     }
+
+    @Override
+    public void amountReturn(int amount) {
+        int amountReturn = amount - yearPercent;
+        if (amountReturn <= 0) {
+            yearPercent = amount - amountReturn;
+        } else {
+            add(amountReturn);
+            yearPercent = amount - amountReturn;
+        }
+    }
 }
