@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 public class BankTest {
 
     @Test
-    void test1() {
+    void shouldChangeBalanceInSaving() {
         SavingAccount savingAccount = new SavingAccount(
                 2_000,
                 1_000,
@@ -28,7 +28,7 @@ public class BankTest {
     }
 
     @Test
-    void test2() {
+    void shouldChangeBalanceInCredit() {
         SavingAccount savingAccount = new SavingAccount(
                 2_000,
                 1_000,
@@ -50,7 +50,7 @@ public class BankTest {
     }
 
     @Test
-    void test5() {
+    void shouldReturnTrue() {
         SavingAccount savingAccount = new SavingAccount(
                 2_000,
                 1_000,
@@ -70,29 +70,7 @@ public class BankTest {
     }
 
     @Test
-    void test3() {
-        SavingAccount savingAccount = new SavingAccount(
-                2_000,
-                1_000,
-                5_000,
-                5,
-                365
-        );
-        CreditAccount creditAccount = new CreditAccount(
-                2_000,
-                1_000,
-                5,
-                365
-        );
-        Bank bank = new Bank();
-
-        bank.transfer(savingAccount, creditAccount, 1_500);
-
-        Assertions.assertEquals(2_000, creditAccount.getBalance());
-    }
-
-    @Test
-    void test4() {
+    void shouldNotChangeBalanceInSaving() {
         SavingAccount savingAccount = new SavingAccount(
                 2_000,
                 1_000,
@@ -114,7 +92,29 @@ public class BankTest {
     }
 
     @Test
-    void test6() {
+    void shouldNotChangeBalanceInCredit() {
+        SavingAccount savingAccount = new SavingAccount(
+                2_000,
+                1_000,
+                5_000,
+                5,
+                365
+        );
+        CreditAccount creditAccount = new CreditAccount(
+                2_000,
+                1_000,
+                5,
+                365
+        );
+        Bank bank = new Bank();
+
+        bank.transfer(savingAccount, creditAccount, 1_500);
+
+        Assertions.assertEquals(2_000, creditAccount.getBalance());
+    }
+
+    @Test
+    void shouldReturnFalseIfBalanceLessThanMinBalance() {
         SavingAccount savingAccount = new SavingAccount(
                 2_000,
                 1_000,
@@ -134,7 +134,7 @@ public class BankTest {
     }
 
     @Test
-    void test7() {
+    void shouldReturnFalseIfAmountEqualsZero() {
         SavingAccount savingAccount = new SavingAccount(
                 2_000,
                 1_000,
@@ -154,7 +154,7 @@ public class BankTest {
     }
 
     @Test
-    void test8() {
+    void shouldReturnFalseIfAmountNegative() {
         SavingAccount savingAccount = new SavingAccount(
                 2_000,
                 1_000,
@@ -174,46 +174,321 @@ public class BankTest {
     }
 
     @Test
-    void test9() {
+    public void shouldTrueIfTransferIsActual() {
+        Bank bank = new Bank();
+
+        CreditAccount creditAccount = new CreditAccount(
+                1000,
+                5_000,
+                15,
+                365
+        );
         SavingAccount savingAccount = new SavingAccount(
                 2_000,
                 1_000,
-                3_000,
-                5,
+                10_000,
+                10,
                 365
         );
-        CreditAccount creditAccount = new CreditAccount(
-                2_000,
-                1_000,
-                5,
-                365
-        );
+        Assertions.assertTrue(bank.transfer(creditAccount, savingAccount, 1000));
+    }
+    @Test
+    public void shouldShowCreditAccountIfTransferIsActual() {
         Bank bank = new Bank();
 
-        bank.transfer(creditAccount, savingAccount, 1_500);
+        CreditAccount creditAccount = new CreditAccount(
+                2_000,
+                5_000,
+                15,
+                365
+        );
+        SavingAccount savingAccount = new SavingAccount(
+                2_000,
+                1_000,
+                10_000,
+                10,
+                365
+        );
+        bank.transfer(creditAccount, savingAccount, 3_000);
 
-        Assertions.assertEquals(2_000, creditAccount.getBalance());
+        Assertions.assertEquals(-1_000, creditAccount.getBalance());
+
+    }
+    @Test
+    public void shouldShowSavingAccountIfTransferIsActual() {
+        Bank bank = new Bank();
+
+        CreditAccount creditAccount = new CreditAccount(
+                2_000,
+                5_000,
+                15,
+                365
+        );
+        SavingAccount savingAccount = new SavingAccount(
+                2_000,
+                1_000,
+                10_000,
+                10,
+                365
+        );
+        bank.transfer(creditAccount, savingAccount, 3_000);
+
+        Assertions.assertEquals(5_000, savingAccount.getBalance());
+
+    }
+    @Test
+    public void shouldFalseIfTransferIsZero() {
+        Bank bank = new Bank();
+
+        CreditAccount creditAccount = new CreditAccount(
+                1000,
+                5_000,
+                15,
+                365
+        );
+        SavingAccount savingAccount = new SavingAccount(
+                2_000,
+                1_000,
+                10_000,
+                10,
+                365
+        );
+
+        Assertions.assertFalse(bank.transfer(creditAccount, savingAccount, 0));
+
     }
 
     @Test
-    void test10() {
+    public void shouldFalseIfTransferIsBelowZero() {
+        Bank bank = new Bank();
+
+        CreditAccount creditAccount = new CreditAccount(
+                1000,
+                5_000,
+                15,
+                365
+        );
         SavingAccount savingAccount = new SavingAccount(
                 2_000,
                 1_000,
-                3_000,
-                5,
+                10_000,
+                10,
                 365
         );
-        CreditAccount creditAccount = new CreditAccount(
-                2_000,
-                1_000,
-                5,
-                365
-        );
+
+        Assertions.assertFalse(bank.transfer(creditAccount, savingAccount, -1));
+
+    }
+
+    @Test
+    public void  shouldTrueAtTransferIfCreditLimitIsZero() {
         Bank bank = new Bank();
 
-        bank.transfer(creditAccount, savingAccount, 1_500);
+        CreditAccount creditAccount = new CreditAccount(
+                2_000,
+                0,
+                15,
+                365
+        );
+        SavingAccount savingAccount = new SavingAccount(
+                2_000,
+                1_000,
+                10_000,
+                10,
+                365
+        );
+        Assertions.assertTrue(bank.transfer(creditAccount, savingAccount, 1000));
+    }
+
+    @Test
+    public void shouldTrueAtTransferIfMinBalanceIsZero() {
+        Bank bank = new Bank();
+
+        CreditAccount creditAccount = new CreditAccount(
+                2_000,
+                5_000,
+                15,
+                365
+        );
+        SavingAccount savingAccount = new SavingAccount(
+                1_000,
+                0,
+                10_000,
+                10,
+                365
+        );
+        Assertions.assertTrue(bank.transfer(creditAccount, savingAccount, 1000));
+    }
+
+    @Test
+    public void shouldTrueAtTransferIfMinBalanceAndInitialBalanceIsZero() {
+        Bank bank = new Bank();
+
+        CreditAccount creditAccount = new CreditAccount(
+                2_000,
+                5_000,
+                15,
+                365
+        );
+        SavingAccount savingAccount = new SavingAccount(
+                0,
+                0,
+                10_000,
+                10,
+                365
+        );
+        Assertions.assertTrue(bank.transfer(creditAccount, savingAccount, 1000));
+    }
+
+
+    @Test
+    public void shouldTrueAtTransferEqualsCreditLimit () {
+        Bank bank = new Bank();
+
+        CreditAccount creditAccount = new CreditAccount(
+                2_000,
+                5_000,
+                15,
+                365
+        );
+        SavingAccount savingAccount = new SavingAccount(
+                2_000,
+                1_000,
+                10_000,
+                10,
+                365
+        );
+        Assertions.assertTrue(bank.transfer(creditAccount, savingAccount, 7000));
+    }
+
+    @Test
+    public void shouldFalseAtTransferAboveCreditLimit() {
+        Bank bank = new Bank();
+
+        CreditAccount creditAccount = new CreditAccount(
+                2_000,
+                3_000,
+                15,
+                365
+        );
+        SavingAccount savingAccount = new SavingAccount(
+                2_000,
+                1_000,
+                10_000,
+                10,
+                365
+        );
+        Assertions.assertFalse(bank.transfer(creditAccount, savingAccount, 6000));
+    }
+    @Test
+    public void shouldShowBalanceCreditAccountAtTransferAboveCreditLimit() {
+        Bank bank = new Bank();
+
+        CreditAccount creditAccount = new CreditAccount(
+                2_000,
+                3_000,
+                15,
+                365
+        );
+
+        SavingAccount savingAccount = new SavingAccount(
+                2_000,
+                1_000,
+                10_000,
+                10,
+                365
+        );
+        bank.transfer(creditAccount, savingAccount, 10_000);
+
+        Assertions.assertEquals(2_000, creditAccount.getBalance());
+
+    }
+    @Test
+    public void shouldFalseAtTransferAboveMaxBalance() {
+        Bank bank = new Bank();
+
+        CreditAccount creditAccount = new CreditAccount(
+                3_000,
+                3_000,
+                15,
+                365
+        );
+
+        SavingAccount savingAccount = new SavingAccount(
+                2_000,
+                1_000,
+                5_000,
+                10,
+                365
+        );
+
+        Assertions.assertFalse(bank.transfer(creditAccount, savingAccount, 8_000));
+    }
+
+    @Test
+    public void shouldShowCreditBalanceAtTransferAboveMaxBalance() {
+        Bank bank = new Bank();
+
+        CreditAccount creditAccount = new CreditAccount(
+                2_000,
+                10_000,
+                15,
+                365
+        );
+        SavingAccount savingAccount = new SavingAccount(
+                2_000,
+                1_000,
+                5_000,
+                10,
+                365
+        );
+        bank.transfer(creditAccount, savingAccount, 8_000);
+
+        Assertions.assertEquals(2_000, creditAccount.getBalance());
+    }
+    @Test
+    public void shouldShowSavingBalanceAtTransferAboveMaxBalance() {
+        Bank bank = new Bank();
+
+        CreditAccount creditAccount = new CreditAccount(
+                2_000,
+                10_000,
+                15,
+                365
+        );
+
+        SavingAccount savingAccount = new SavingAccount(
+                2_000,
+                1_000,
+                5_000,
+                10,
+                365
+        );
+
+        bank.transfer(creditAccount, savingAccount, 8_000);
 
         Assertions.assertEquals(2_000, savingAccount.getBalance());
+    }
+    @Test
+    public void shouldChangeBalanceInSavingAccount() {
+        Bank bank = new Bank();
+
+        CreditAccount creditAccount = new CreditAccount(
+                3_000,
+                5_000,
+                15,
+                365
+        );
+        SavingAccount savingAccount = new SavingAccount(
+                3_000,
+                1_000,
+                10_000,
+                10,
+                365
+        );
+
+        bank.transfer(creditAccount, savingAccount, 3_000);
+
+        Assertions.assertEquals(6_000, savingAccount.getBalance());
     }
 }
