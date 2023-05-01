@@ -10,6 +10,7 @@ public class SavingAccount extends Account {
     protected int termDays;
     protected int daysYear = 365;
     protected int yearPercent;
+    protected int change;
 
     List<Integer> dayBalanceList = new ArrayList<>();
     List<Integer> addList = new ArrayList<>();
@@ -52,6 +53,7 @@ public class SavingAccount extends Account {
     }
 
     public boolean pay(int amount) {
+        int initial = balance;
         if (amount <= 0) {
             return false;
         }
@@ -66,6 +68,7 @@ public class SavingAccount extends Account {
         balance = balance - amount + yearPercent;
         payList.add(amount);
         yearPercent = 0;
+        this.change = initial - balance;
         return true;
     }
 
@@ -193,5 +196,12 @@ public class SavingAccount extends Account {
 
     public SavingAccount getSavingAccount(SavingAccount account) {
         return account;
+    }
+
+    @Override
+    public void amountReturn(int amount) {
+        int amountReturn = change;
+        add(amountReturn);
+        yearPercent = yearPercent + amount - change;
     }
 }

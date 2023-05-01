@@ -22,7 +22,7 @@ public class BankTest {
         );
         Bank bank = new Bank();
 
-         bank.transfer(savingAccount, creditAccount, 500);
+        bank.transfer(savingAccount, creditAccount, 500);
 
         Assertions.assertEquals(1_500, savingAccount.getBalance());
     }
@@ -174,7 +174,7 @@ public class BankTest {
     }
 
     @Test
-    public void shouldTrueIfTransferIsActual() {
+    void shouldTrueIfTransferIsActual() {
         Bank bank = new Bank();
 
         CreditAccount creditAccount = new CreditAccount(
@@ -192,8 +192,9 @@ public class BankTest {
         );
         Assertions.assertTrue(bank.transfer(creditAccount, savingAccount, 1000));
     }
+
     @Test
-    public void shouldShowCreditAccountIfTransferIsActual() {
+    void shouldShowCreditAccountIfTransferIsActual() {
         Bank bank = new Bank();
 
         CreditAccount creditAccount = new CreditAccount(
@@ -214,8 +215,9 @@ public class BankTest {
         Assertions.assertEquals(-1_000, creditAccount.getBalance());
 
     }
+
     @Test
-    public void shouldShowSavingAccountIfTransferIsActual() {
+    void shouldShowSavingAccountIfTransferIsActual() {
         Bank bank = new Bank();
 
         CreditAccount creditAccount = new CreditAccount(
@@ -236,8 +238,9 @@ public class BankTest {
         Assertions.assertEquals(5_000, savingAccount.getBalance());
 
     }
+
     @Test
-    public void shouldFalseIfTransferIsZero() {
+    void shouldFalseIfTransferIsZero() {
         Bank bank = new Bank();
 
         CreditAccount creditAccount = new CreditAccount(
@@ -259,7 +262,7 @@ public class BankTest {
     }
 
     @Test
-    public void shouldFalseIfTransferIsBelowZero() {
+    void shouldFalseIfTransferIsBelowZero() {
         Bank bank = new Bank();
 
         CreditAccount creditAccount = new CreditAccount(
@@ -281,7 +284,7 @@ public class BankTest {
     }
 
     @Test
-    public void  shouldTrueAtTransferIfCreditLimitIsZero() {
+    void shouldTrueAtTransferIfCreditLimitIsZero() {
         Bank bank = new Bank();
 
         CreditAccount creditAccount = new CreditAccount(
@@ -301,7 +304,7 @@ public class BankTest {
     }
 
     @Test
-    public void shouldTrueAtTransferIfMinBalanceIsZero() {
+    void shouldTrueAtTransferIfMinBalanceIsZero() {
         Bank bank = new Bank();
 
         CreditAccount creditAccount = new CreditAccount(
@@ -321,7 +324,7 @@ public class BankTest {
     }
 
     @Test
-    public void shouldTrueAtTransferIfMinBalanceAndInitialBalanceIsZero() {
+    void shouldTrueAtTransferIfMinBalanceAndInitialBalanceIsZero() {
         Bank bank = new Bank();
 
         CreditAccount creditAccount = new CreditAccount(
@@ -342,7 +345,7 @@ public class BankTest {
 
 
     @Test
-    public void shouldTrueAtTransferEqualsCreditLimit () {
+    void shouldTrueAtTransferEqualsCreditLimit() {
         Bank bank = new Bank();
 
         CreditAccount creditAccount = new CreditAccount(
@@ -362,7 +365,7 @@ public class BankTest {
     }
 
     @Test
-    public void shouldFalseAtTransferAboveCreditLimit() {
+    void shouldFalseAtTransferAboveCreditLimit() {
         Bank bank = new Bank();
 
         CreditAccount creditAccount = new CreditAccount(
@@ -380,8 +383,9 @@ public class BankTest {
         );
         Assertions.assertFalse(bank.transfer(creditAccount, savingAccount, 6000));
     }
+
     @Test
-    public void shouldShowBalanceCreditAccountAtTransferAboveCreditLimit() {
+    void shouldShowBalanceCreditAccountAtTransferAboveCreditLimit() {
         Bank bank = new Bank();
 
         CreditAccount creditAccount = new CreditAccount(
@@ -403,8 +407,9 @@ public class BankTest {
         Assertions.assertEquals(2_000, creditAccount.getBalance());
 
     }
+
     @Test
-    public void shouldFalseAtTransferAboveMaxBalance() {
+    void shouldFalseAtTransferAboveMaxBalance() {
         Bank bank = new Bank();
 
         CreditAccount creditAccount = new CreditAccount(
@@ -426,7 +431,7 @@ public class BankTest {
     }
 
     @Test
-    public void shouldShowCreditBalanceAtTransferAboveMaxBalance() {
+    void shouldShowCreditBalanceAtTransferAboveMaxBalance() {
         Bank bank = new Bank();
 
         CreditAccount creditAccount = new CreditAccount(
@@ -446,8 +451,9 @@ public class BankTest {
 
         Assertions.assertEquals(2_000, creditAccount.getBalance());
     }
+
     @Test
-    public void shouldShowSavingBalanceAtTransferAboveMaxBalance() {
+    void shouldShowSavingBalanceAtTransferAboveMaxBalance() {
         Bank bank = new Bank();
 
         CreditAccount creditAccount = new CreditAccount(
@@ -469,8 +475,9 @@ public class BankTest {
 
         Assertions.assertEquals(2_000, savingAccount.getBalance());
     }
+
     @Test
-    public void shouldChangeBalanceInSavingAccount() {
+    void shouldChangeBalanceInSavingAccount() {
         Bank bank = new Bank();
 
         CreditAccount creditAccount = new CreditAccount(
@@ -490,5 +497,143 @@ public class BankTest {
         bank.transfer(creditAccount, savingAccount, 3_000);
 
         Assertions.assertEquals(6_000, savingAccount.getBalance());
+    }
+
+    @Test
+    void shouldNotChangeBalanceInCreditAfterIfAmountMoreThanPositiveYearPercent() {
+        SavingAccount savingAccount = new SavingAccount(
+                2_000,
+                0,
+                3_000,
+                5,
+                365
+        );
+        CreditAccount creditAccount = new CreditAccount(
+                2_000,
+                1_000,
+                5,
+                365
+        );
+        Bank bank = new Bank();
+        creditAccount.yearPercent = -1_000;
+
+        bank.transfer(creditAccount, savingAccount, 1_500);
+
+        Assertions.assertEquals(2_000, creditAccount.getBalance());
+    }
+
+    @Test
+    void shouldNotChangeBalanceInCreditAfterIfAmountEqualsPositiveYearPercent() {
+        SavingAccount savingAccount = new SavingAccount(
+                500,
+                0,
+                1_000,
+                5,
+                365
+        );
+        CreditAccount creditAccount = new CreditAccount(
+                2_000,
+                1_000,
+                5,
+                365
+        );
+        Bank bank = new Bank();
+        creditAccount.yearPercent = -1_000;
+
+        bank.transfer(creditAccount, savingAccount, 1_000);
+
+        Assertions.assertEquals(2_000, creditAccount.getBalance());
+    }
+
+    @Test
+    void shouldNotChangeBalanceInCreditAfterIfAmountLessPositiveYearPercent() {
+        SavingAccount savingAccount = new SavingAccount(
+                500,
+                0,
+                1_000,
+                5,
+                365
+        );
+        CreditAccount creditAccount = new CreditAccount(
+                2_000,
+                1_000,
+                5,
+                365
+        );
+        Bank bank = new Bank();
+        creditAccount.yearPercent = -1_000;
+
+        bank.transfer(creditAccount, savingAccount, 600);
+
+        Assertions.assertEquals(2_000, creditAccount.getBalance());
+    }
+
+    @Test
+    void shouldNotChangeYearPercentInCreditIfAmountLessPositiveYearPercent() {
+        SavingAccount savingAccount = new SavingAccount(
+                500,
+                0,
+                1_000,
+                5,
+                365
+        );
+        CreditAccount creditAccount = new CreditAccount(
+                2_000,
+                1_000,
+                5,
+                365
+        );
+        Bank bank = new Bank();
+        creditAccount.yearPercent = -1_000;
+
+        bank.transfer(creditAccount, savingAccount, 600);
+
+        Assertions.assertEquals(-1_000, creditAccount.getYearPercent());
+    }
+
+    @Test
+    void shouldNotChangeYearPercentInCreditIfAmountEqualsPositiveYearPercent() {
+        SavingAccount savingAccount = new SavingAccount(
+                500,
+                0,
+                1_000,
+                5,
+                365
+        );
+        CreditAccount creditAccount = new CreditAccount(
+                2_000,
+                1_000,
+                5,
+                365
+        );
+        Bank bank = new Bank();
+        creditAccount.yearPercent = -1_000;
+
+        bank.transfer(creditAccount, savingAccount, 1_000);
+
+        Assertions.assertEquals(-1_000, creditAccount.getYearPercent());
+    }
+
+    @Test
+    void shouldNotChangeYearPercentInCreditIfAmountMorePositiveYearPercent() {
+        SavingAccount savingAccount = new SavingAccount(
+                500,
+                0,
+                1_000,
+                5,
+                365
+        );
+        CreditAccount creditAccount = new CreditAccount(
+                2_000,
+                1_000,
+                5,
+                365
+        );
+        Bank bank = new Bank();
+        creditAccount.yearPercent = -1_000;
+
+        bank.transfer(creditAccount, savingAccount, 1_500);
+
+        Assertions.assertEquals(-1_000, creditAccount.getYearPercent());
     }
 }

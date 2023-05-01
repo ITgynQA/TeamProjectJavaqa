@@ -166,4 +166,11 @@ public class CreditAccount extends Account {
     public CreditAccount getCreditAccount(CreditAccount account) {
         return account;
     }
+
+    @Override
+    public void amountReturn(int amount) {
+        int amountReturn = amount - yearPercent;
+        add(amountReturn);
+        yearPercent = amount - amountReturn;
+    }
 }
