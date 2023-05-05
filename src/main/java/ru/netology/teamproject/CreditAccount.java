@@ -48,9 +48,8 @@ public class CreditAccount extends Account {
 
     @Override
     public int yearChange() {
-        int change = 0;
         if (balance >= 0) {
-            return change;
+            return 0;
         }
         return balance * rate / 100;
     }
