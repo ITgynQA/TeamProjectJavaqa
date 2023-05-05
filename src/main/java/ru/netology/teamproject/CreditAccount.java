@@ -1,20 +1,9 @@
 package ru.netology.teamproject;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
 public class CreditAccount extends Account {
-
     protected int creditLimit;
-    protected int termDays;
-    protected int daysYear = 365;
-    protected int yearPercent;
-    List<Integer> dayBalanceList = new ArrayList<>();
-    List<Integer> addList = new ArrayList<>();
-    List<Integer> payList = new ArrayList<>();
 
-    public CreditAccount(int initialBalance, int creditLimit, int rate, int termDays) {
+    public CreditAccount(int initialBalance, int creditLimit, int rate) {
         if (rate < 0) {
             throw new IllegalArgumentException(
                     "Накопительная ставка не может быть отрицательной, а у вас: " + rate
@@ -30,15 +19,9 @@ public class CreditAccount extends Account {
                     "Кредитный лимит не может быть отрицательным, а у вас: " + creditLimit
             );
         }
-        if (termDays <= 0) {
-            throw new IllegalArgumentException(
-                    "Срок не может быть равен нулю или отрицательным, а у вас: " + termDays
-            );
-        }
         this.balance = initialBalance;
         this.creditLimit = creditLimit;
         this.rate = rate;
-        this.termDays = termDays;
     }
 
     @Override
@@ -46,29 +29,12 @@ public class CreditAccount extends Account {
         if (amount <= 0) {
             return false;
         }
-        if (balance - amount >= -creditLimit) {
-            balance = balance - amount;
-            payList.add(amount);
-            return true;
-        } else {
+        if (balance - amount < -creditLimit) {
             return false;
+        } else {
+            balance = balance - amount;
+            return true;
         }
-    }
-
-    public int getAmountPay() {
-        int amountPay = 0;
-        for (int i : payList) {
-            amountPay = amountPay + i;
-        }
-        return amountPay;
-    }
-
-    public void clearPayList() {
-        payList.clear();
-    }
-
-    public List<Integer> getPayList() {
-        return payList;
     }
 
     @Override
@@ -76,31 +42,8 @@ public class CreditAccount extends Account {
         if (amount <= 0) {
             return false;
         }
-        if (amount <= -yearPercent) {
-            yearPercent = yearPercent + amount;
-            addList.add(amount);
-            return true;
-        }
-        addList.add(amount);
-        balance = balance + amount + yearPercent;
-        yearPercent = 0;
+        balance = balance + amount;
         return true;
-    }
-
-    public int getAmountAdd() {
-        int amountAdd = 0;
-        for (int i : addList) {
-            amountAdd = amountAdd + i;
-        }
-        return amountAdd;
-    }
-
-    public void clearAddList() {
-        addList.clear();
-    }
-
-    public List<Integer> getAddList() {
-        return addList;
     }
 
     @Override
@@ -109,46 +52,8 @@ public class CreditAccount extends Account {
         if (balance >= 0) {
             return change;
         }
-        if (termDays == daysYear) {
-            change = balance * rate / 100;
-        }
-        return change;
+        return balance * rate / 100;
     }
-
-    public void addDayBalance() {
-        dayBalanceList.add(balance);
-    }
-
-    public List<Integer> getDayBalanceList() {
-        return dayBalanceList;
-    }
-
-    public void yearPercent() {
-        int amount = 0;
-        for (int i : dayBalanceList) {
-            if (i < 0) {
-                amount = i + amount;
-            }
-        }
-        double yearPercent = (double) amount / daysYear * rate / 100;
-        this.yearPercent = (int) yearPercent;
-        dayBalanceList.clear();
-    }
-
-    @Override
-    public void setRate(int rate) {
-        if (rate < 0) {
-            throw new IllegalArgumentException(
-                    "Накопительная ставка не может быть отрицательной, а у вас: " + rate
-            );
-        }
-        this.rate = rate;
-    }
-
-    public int getYearPercent() {
-        return yearPercent;
-    }
-
 
     public int getCreditLimit() {
         return creditLimit;
@@ -163,14 +68,13 @@ public class CreditAccount extends Account {
         this.creditLimit = creditLimit;
     }
 
-    public CreditAccount getCreditAccount(CreditAccount account) {
-        return account;
-    }
-
     @Override
-    public void amountReturn(int amount) {
-        int amountReturn = amount - yearPercent;
-        add(amountReturn);
-        yearPercent = amount - amountReturn;
+    public void setRate(int rate) {
+        if (rate < 0) {
+            throw new IllegalArgumentException(
+                    "Накопительная ставка не может быть отрицательной, а у вас: " + rate
+            );
+        }
+        this.rate = rate;
     }
 }

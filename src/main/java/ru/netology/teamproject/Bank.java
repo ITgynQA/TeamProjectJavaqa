@@ -11,7 +11,7 @@ public class Bank {
             return false;
         }
         if (!to.add(amount)) {
-            from.amountReturn(amount);
+            from.add(amount);
             return false;
         }
         return true;
